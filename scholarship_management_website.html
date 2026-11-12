@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ScholarEase | Scholarship Management System</title>
+<style>
+:root{--navy:#14213d;--blue:#2457c5;--sky:#eaf1ff;--ink:#1c2638;--muted:#64748b;--line:#e5eaf2;--bg:#f6f8fc;--green:#16845b;--red:#c2414b;--gold:#a66b00}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+header{background:var(--navy);color:#fff;padding:16px 5%;display:flex;align-items:center;justify-content:space-between;gap:16px;position:sticky;top:0;z-index:5;box-shadow:0 4px 18px #0c173322}
+.brand{font-size:21px;font-weight:800;letter-spacing:.2px}.brand span{color:#8fb2ff}
+nav{display:flex;gap:8px;flex-wrap:wrap}button,.btn{border:0;border-radius:9px;padding:10px 14px;font-weight:650;cursor:pointer;font-size:14px;transition:.15s}
+nav button{background:transparent;color:#dce6ff}nav button.active,nav button:hover{background:#ffffff1c;color:white}
+main{max-width:1150px;margin:28px auto;padding:0 20px}.hero{background:linear-gradient(120deg,#14213d,#2457c5);color:white;border-radius:20px;padding:38px;display:grid;grid-template-columns:1.5fr 1fr;gap:20px;align-items:center}
+.hero h1{font-size:clamp(28px,4vw,43px);margin:0 0 12px}.hero p{color:#dbe6ff;line-height:1.6;max-width:620px}.hero .btn{background:white;color:var(--navy);margin-top:8px}
+.hero-art{font-size:90px;text-align:center;filter:drop-shadow(0 12px 16px #0003)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:20px 0}.stat,.panel,.card{background:white;border:1px solid var(--line);border-radius:15px;padding:19px;box-shadow:0 5px 20px #14213d08}.stat small{color:var(--muted)}.stat strong{display:block;font-size:27px;margin-top:7px}
+.section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:26px 0 14px}.section-head h2{margin:0;font-size:22px}.muted{color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card h3{margin:8px 0}.card p{color:var(--muted);font-size:14px;line-height:1.5}.tag{display:inline-block;background:var(--sky);color:#214ca7;padding:5px 9px;border-radius:30px;font-size:12px;font-weight:700}.amount{font-size:22px;font-weight:800;color:var(--navy);margin:12px 0}.primary{background:var(--blue);color:white}.primary:hover{background:#1946a8}.secondary{background:#eef2f8;color:#26364e}.danger{background:#fff0f0;color:var(--red)}.success{background:#e9f8f0;color:var(--green)}.warning{background:#fff6df;color:var(--gold)}
+input,select,textarea{width:100%;padding:11px 12px;border:1px solid #d6deea;border-radius:9px;font:inherit;background:white;color:var(--ink);margin:6px 0 13px}label{font-size:13px;font-weight:700;color:#43516a}textarea{min-height:85px;resize:vertical}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.form-actions{display:flex;gap:8px;flex-wrap:wrap}
+.hidden{display:none!important}.empty{text-align:center;padding:35px;color:var(--muted);background:white;border:1px dashed #cbd5e1;border-radius:14px}
+.table-wrap{overflow:auto;background:white;border:1px solid var(--line);border-radius:13px}table{border-collapse:collapse;width:100%;min-width:650px}th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);font-size:14px}th{background:#f1f5fb;color:#45536b}tr:last-child td{border-bottom:0}.status{font-size:12px;font-weight:800;padding:5px 9px;border-radius:20px;display:inline-block}.pending{background:#fff4d8;color:#946200}.approved{background:#e6f7ed;color:#13734b}.rejected{background:#ffe9e9;color:#b4232e}
+.auth{max-width:490px;margin:34px auto}.auth h2{margin-top:0}.notice{background:#fff8e8;border:1px solid #f1dfb2;padding:12px;border-radius:10px;color:#795b1c;font-size:13px;line-height:1.5;margin-top:14px}
+footer{text-align:center;color:var(--muted);padding:35px 15px;font-size:13px}
+@media(max-width:800px){.grid{grid-template-columns:repeat(2,1fr)}.hero{grid-template-columns:1fr}.hero-art{display:none}}
+@media(max-width:560px){header{align-items:flex-start;flex-direction:column}.stats{grid-template-columns:1fr}.grid,.form-grid{grid-template-columns:1fr}.hero{padding:25px}.section-head{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">Scholar<span>Ease</span></div>
+  <nav id="nav">
+    <button class="active" data-page="home">Home</button>
+    <button data-page="scholarships">Scholarships</button>
+    <button data-page="track">My Applications</button>
+    <button data-page="auth" id="loginNav">Student Login</button>
+    <button data-page="admin">Admin</button>
+  </nav>
+</header>
+<main>
+<section id="home" class="page">
+  <div class="hero">
+    <div><span class="tag">SCHOLARSHIP MANAGEMENT SYSTEM</span><h1>Find support for your next big step.</h1><p>Explore scholarship opportunities, check eligibility, submit applications online and follow your application status in one place.</p><button class="btn" onclick="showPage('scholarships')">Explore scholarships →</button></div>
+    <div class="hero-art" aria-hidden="true">🎓</div>
+  </div>
+  <div class="stats">
+    <div class="stat"><small>Scholarships listed</small><strong id="statScholarships">0</strong></div>
+    <div class="stat"><small>Applications submitted</small><strong id="statApplications">0</strong></div>
+    <div class="stat"><small>Approved applications</small><strong id="statApproved">0</strong></div>
+  </div>
+  <div class="section-head"><h2>Featured scholarships</h2><button class="secondary" onclick="showPage('scholarships')">View all</button></div>
+  <div class="grid" id="featured"></div>
+</section>
+
+<section id="scholarships" class="page hidden">
+  <div class="section-head"><div><h2>Available scholarships</h2><div class="muted">Browse opportunities and review their eligibility details.</div></div></div>
+  <input id="searchScholarship" placeholder="Search by scholarship name or eligibility…" oninput="renderScholarships()">
+  <div class="grid" id="scholarshipList"></div>
+</section>
+
+<section id="auth" class="page hidden">
+  <div class="panel auth">
+    <h2 id="authTitle">Student login</h2><p class="muted" id="authSubtitle">Sign in to submit applications and track their progress.</p>
+    <form id="authForm">
+      <div id="nameField" class="hidden"><label>Full name</label><input id="studentName" autocomplete="name" placeholder="Enter your full name"></div>
+      <label>Email address</label><input id="studentEmail" type="email" required autocomplete="email" placeholder="you@example.com">
+      <label>Password</label><input id="studentPassword" type="password" required minlength="4" autocomplete="current-password" placeholder="Enter password">
+      <button class="primary" id="authSubmit" type="submit">Login</button>
+      <button class="secondary" type="button" onclick="toggleAuth()">Create an account</button>
+    </form>
+    <div class="notice">Demo project: accounts are stored only in this browser. Do not enter real passwords or sensitive personal information.</div>
+  </div>
+</section>
+
+<section id="track" class="page hidden">
+  <div class="section-head"><div><h2>My applications</h2><div class="muted" id="trackSubtitle">Log in to view your submitted applications.</div></div></div>
+  <div id="myApplications"></div>
+</section>
+
+<section id="apply" class="page hidden">
+  <div class="panel">
+    <h2>Scholarship application</h2><p class="muted" id="applyFor"></p>
+    <form id="applicationForm">
+      <div class="form-grid">
+        <div><label>Full name</label><input id="appName" required></div>
+        <div><label>Email address</label><input id="appEmail" type="email" required></div>
+        <div><label>Phone number</label><input id="appPhone" required placeholder="Enter phone number"></div>
+        <div><label>College / Institution</label><input id="appCollege" required></div>
+        <div><label>Course / Department</label><input id="appCourse" required placeholder="e.g. B.E. ECE"></div>
+        <div><label>Year of study</label><select id="appYear" required><option value="">Select year</option><option>1st Year</option><option>2nd Year</option><option>3rd Year</option><option>4th Year</option><option>Other</option></select></div>
+      </div>
+      <label>Why are you applying? (brief statement)</label><textarea id="appReason" required placeholder="Write a short statement…"></textarea>
+      <div class="form-actions"><button class="primary" type="submit">Submit application</button><button class="secondary" type="button" onclick="showPage('scholarships')">Cancel</button></div>
+    </form>
+    <div class="notice">This demonstration does not upload or verify certificates. A production system should add secure document upload and eligibility verification.</div>
+  </div>
+</section>
+
+<section id="admin" class="page hidden">
+  <div id="adminLogin" class="panel auth">
+    <h2>Administrator access</h2><p class="muted">Sign in to manage scholarships and review applications.</p>
+    <label>Admin username</label><input id="adminUser" placeholder="admin">
+    <label>Admin password</label><input id="adminPass" type="password" placeholder="Enter demo password">
+    <button class="primary" onclick="adminLogin()">Login as admin</button>
+    <div class="notice">Demo credentials: username <b>admin</b>, password <b>admin123</b>. Change these before any real deployment.</div>
+  </div>
+  <div id="adminPanel" class="hidden">
+    <div class="section-head"><div><h2>Admin dashboard</h2><div class="muted">Manage scholarship listings and student applications.</div></div><button class="secondary" onclick="adminLogout()">Log out</button></div>
+    <div class="panel">
+      <h3 id="schFormTitle">Add a scholarship</h3>
+      <form id="scholarshipForm">
+        <input id="editId" type="hidden">
+        <div class="form-grid">
+          <div><label>Scholarship name</label><input id="schName" required></div>
+          <div><label>Award amount (display text)</label><input id="schAmount" required placeholder="e.g. ₹20,000"></div>
+          <div><label>Eligibility</label><input id="schEligibility" required></div>
+          <div><label>Last date</label><input id="schDate" type="date" required></div>
+        </div>
+        <label>Description</label><textarea id="schDescription" required></textarea>
+        <div class="form-actions"><button class="primary" type="submit">Save scholarship</button><button class="secondary" type="button" onclick="resetScholarshipForm()">Clear</button></div>
+      </form>
+    </div>
+    <div class="section-head"><h2>Scholarship records</h2></div><div id="adminScholarships"></div>
+    <div class="section-head"><h2>Student applications</h2></div><div id="adminApplications"></div>
+  </div>
+</section>
+</main>
+<footer>ScholarEase · Scholarship Management System · Student project demonstration</footer>
+<script>
+const seedScholarships=[
+{id:1,name:"National Merit Scholarship",amount:"₹25,000",eligibility:"Students with strong academic performance",date:"2027-03-31",description:"A merit-based opportunity to support students pursuing higher education."},
+{id:2,name:"First Generation Learner Grant",amount:"₹15,000",eligibility:"Eligible first-generation college students",date:"2027-02-28",description:"Financial assistance for eligible students who are the first in their family to attend college."},
+{id:3,name:"STEM Education Support",amount:"₹20,000",eligibility:"Students enrolled in science or engineering courses",date:"2027-04-15",description:"Support for students pursuing science, technology, engineering and mathematics."}
+];
+const get=(k,f)=>{try{return JSON.parse(localStorage.getItem(k))??f}catch{return f}};
+const set=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
+let scholarships=get("se_scholarships",seedScholarships),users=get("se_users",[]),applications=get("se_apps",[]);
+let currentUser=get("se_current",null),adminOn=false,registerMode=false,selectedScholarship=null;
+function persist(){set("se_scholarships",scholarships);set("se_users",users);set("se_apps",applications);set("se_current",currentUser)}
+function showPage(id){document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"));document.getElementById(id).classList.remove("hidden");document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===id));if(id==="track")renderMyApps();if(id==="admin")renderAdmin();if(id==="scholarships")renderScholarships();window.scrollTo({top:0,behavior:"smooth"})}
+document.querySelectorAll("nav button").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.page)));
+function updateHeader(){document.getElementById("loginNav").textContent=currentUser?"Hi, "+currentUser.name.split(" ")[0]:"Student Login"}
+function card(s){return `<article class="card"><span class="tag">OPEN FOR APPLICATION</span><h3>${esc(s.name)}</h3><p>${esc(s.description)}</p><p><b>Eligibility:</b> ${esc(s.eligibility)}</p><p><b>Last date:</b> ${esc(s.date)}</p><div class="amount">${esc(s.amount)}</div><button class="primary" onclick="startApply(${s.id})">Apply now</button></article>`}
+function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function renderScholarships(){let q=(document.getElementById("searchScholarship")?.value||"").toLowerCase();let list=scholarships.filter(s=>(s.name+" "+s.eligibility+" "+s.description).toLowerCase().includes(q));document.getElementById("scholarshipList").innerHTML=list.length?list.map(card).join(""):'<div class="empty">No matching scholarships found.</div>'}
+function renderHome(){document.getElementById("featured").innerHTML=scholarships.slice(0,3).map(card).join("")||'<div class="empty">No scholarships listed yet.</div>';document.getElementById("statScholarships").textContent=scholarships.length;document.getElementById("statApplications").textContent=applications.length;document.getElementById("statApproved").textContent=applications.filter(a=>a.status==="Approved").length}
+function toggleAuth(){registerMode=!registerMode;document.getElementById("authTitle").textContent=registerMode?"Create student account":"Student login";document.getElementById("authSubtitle").textContent=registerMode?"Register to apply for scholarships.":"Sign in to submit applications and track their progress.";document.getElementById("nameField").classList.toggle("hidden",!registerMode);document.getElementById("authSubmit").textContent=registerMode?"Create account":"Login";document.getElementById("studentPassword").autocomplete=registerMode?"new-password":"current-password"}
+document.getElementById("authForm").addEventListener("submit",e=>{e.preventDefault();let email=document.getElementById("studentEmail").value.trim().toLowerCase(),password=document.getElementById("studentPassword").value;if(registerMode){let name=document.getElementById("studentName").value.trim();if(!name)return alert("Enter your full name.");if(users.some(u=>u.email===email))return alert("An account with this email already exists.");users.push({name,email,password});currentUser={name,email};}else{let u=users.find(u=>u.email===email&&u.password===password);if(!u)return alert("Incorrect email or password. Create an account if you are new.");currentUser={name:u.name,email:u.email};}persist();updateHeader();alert("You are signed in.");showPage(selectedScholarship?"apply":"track");if(selectedScholarship)prefillApply()});
+function startApply(id){selectedScholarship=id;if(!currentUser){showPage("auth");return}showPage("apply");prefillApply()}
+function prefillApply(){let u=currentUser;if(!u)return;let s=scholarships.find(x=>x.id===selectedScholarship);document.getElementById("applyFor").textContent=s?"Applying for: "+s.name:"";document.getElementById("appName").value=u.name;document.getElementById("appEmail").value=u.email}
+document.getElementById("applicationForm").addEventListener("submit",e=>{e.preventDefault();if(!currentUser)return;let s=scholarships.find(x=>x.id===selectedScholarship);if(!s)return alert("Scholarship not found.");if(applications.some(a=>a.scholarshipId===s.id&&a.email===currentUser.email))return alert("You have already applied for this scholarship.");applications.push({id:Date.now(),scholarshipId:s.id,scholarshipName:s.name,name:document.getElementById("appName").value,email:document.getElementById("appEmail").value,phone:document.getElementById("appPhone").value,college:document.getElementById("appCollege").value,course:document.getElementById("appCourse").value,year:document.getElementById("appYear").value,reason:document.getElementById("appReason").value,status:"Pending",date:new Date().toLocaleDateString()});persist();renderHome();alert("Application submitted successfully.");showPage("track")});
+function renderMyApps(){let box=document.getElementById("myApplications");document.getElementById("trackSubtitle").textContent=currentUser?"Applications submitted by "+currentUser.name:"Log in to view your submitted applications.";if(!currentUser){box.innerHTML='<div class="empty">Please <button class="primary" onclick="showPage(\\'auth\\')">log in</button> to view your applications.</div>';return}let rows=applications.filter(a=>a.email===currentUser.email);box.innerHTML=rows.length?`<div class="table-wrap"><table><thead><tr><th>Scholarship</th><th>Applied on</th><th>Status</th></tr></thead><tbody>${rows.map(a=>`<tr><td>${esc(a.scholarshipName)}</td><td>${esc(a.date)}</td><td><span class="status ${a.status.toLowerCase()}">${esc(a.status)}</span></td></tr>`).join("")}</tbody></table></div>`:'<div class="empty">You have not submitted any applications yet.</div>'}
+function adminLogin(){if(document.getElementById("adminUser").value==="admin"&&document.getElementById("adminPass").value==="admin123"){adminOn=true;renderAdmin()}else alert("Invalid demo admin credentials.")}
+function adminLogout(){adminOn=false;renderAdmin()}
+function renderAdmin(){document.getElementById("adminLogin").classList.toggle("hidden",adminOn);document.getElementById("adminPanel").classList.toggle("hidden",!adminOn);if(!adminOn)return;document.getElementById("adminScholarships").innerHTML=scholarships.length?`<div class="table-wrap"><table><thead><tr><th>Name</th><th>Amount</th><th>Last date</th><th>Actions</th></tr></thead><tbody>${scholarships.map(s=>`<tr><td>${esc(s.name)}</td><td>${esc(s.amount)}</td><td>${esc(s.date)}</td><td><button class="secondary" onclick="editScholarship(${s.id})">Edit</button> <button class="danger" onclick="deleteScholarship(${s.id})">Delete</button></td></tr>`).join("")}</tbody></table></div>`:'<div class="empty">No scholarships added.</div>';document.getElementById("adminApplications").innerHTML=applications.length?`<div class="table-wrap"><table><thead><tr><th>Student</th><th>Scholarship</th><th>Course</th><th>Status</th><th>Update</th></tr></thead><tbody>${applications.map(a=>`<tr><td>${esc(a.name)}<br><span class="muted">${esc(a.email)}</span></td><td>${esc(a.scholarshipName)}</td><td>${esc(a.course)}</td><td><span class="status ${a.status.toLowerCase()}">${esc(a.status)}</span></td><td><button class="success" onclick="setStatus(${a.id},'Approved')">Approve</button> <button class="danger" onclick="setStatus(${a.id},'Rejected')">Reject</button></td></tr>`).join("")}</tbody></table></div>`:'<div class="empty">No applications received yet.</div>'}
+document.getElementById("scholarshipForm").addEventListener("submit",e=>{e.preventDefault();if(!adminOn)return;let id=Number(document.getElementById("editId").value);let obj={id:id||Date.now(),name:document.getElementById("schName").value,amount:document.getElementById("schAmount").value,eligibility:document.getElementById("schEligibility").value,date:document.getElementById("schDate").value,description:document.getElementById("schDescription").value};if(id)scholarships=scholarships.map(s=>s.id===id?obj:s);else scholarships.push(obj);persist();resetScholarshipForm();renderAdmin();renderHome();renderScholarships()});
+function editScholarship(id){let s=scholarships.find(x=>x.id===id);if(!s)return;document.getElementById("editId").value=s.id;document.getElementById("schName").value=s.name;document.getElementById("schAmount").value=s.amount;document.getElementById("schEligibility").value=s.eligibility;document.getElementById("schDate").value=s.date;document.getElementById("schDescription").value=s.description;document.getElementById("schFormTitle").textContent="Edit scholarship";window.scrollTo({top:0,behavior:"smooth"})}
+function resetScholarshipForm(){document.getElementById("scholarshipForm").reset();document.getElementById("editId").value="";document.getElementById("schFormTitle").textContent="Add a scholarship"}
+function deleteScholarship(id){if(!confirm("Delete this scholarship?"))return;scholarships=scholarships.filter(s=>s.id!==id);persist();renderAdmin();renderHome();renderScholarships()}
+function setStatus(id,status){applications=applications.map(a=>a.id===id?{...a,status}:a);persist();renderAdmin();renderHome();renderMyApps()}
+function updateHeader(){document.getElementById("loginNav").textContent=currentUser?"Hi, "+currentUser.name.split(" ")[0]:"Student Login"}
+updateHeader();renderHome();renderScholarships();
+</script>
+</body>
+</html>
